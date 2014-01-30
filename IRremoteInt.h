@@ -107,6 +107,26 @@
 #define SONY_RPT_LENGTH 45000
 #define SONY_DOUBLE_SPACE_USECS  500  // usually ssee 713 - not using ticks as get number wrapround
 
+#define SAMSUNG_HDR_MARK 4764
+#define SAMSUNG_HDR_SPACE 4703
+#define SAMSUNG_ONE_MARK 573 
+#define SAMSUNG_ONE_SPACE 1663
+#define SAMSUNG_ZERO_SPACE 534
+#define SAMSUNG_PTRAIL 556
+#define SAMSUNG_GAP 48962
+
+#define APPLE_HDR_MARK 9140
+#define APPLE_HDR_SPACE 4390
+#define APPLE_REPEAT_MARK 9141
+#define APPLE_REPEAT_SPACE 2157
+#define APPLE_ONE_MARK 608 
+#define APPLE_ONE_SPACE 1618
+#define APPLE_ZERO_SPACE 518
+#define APPLE_PTRAIL 610
+#define APPLE_GAP 107219
+
+
+
 // SA 8650B
 #define SANYO_HDR_MARK  3500  // seen range 3500
 #define SANYO_HDR_SPACE 950 //  seen 950

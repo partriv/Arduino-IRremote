@@ -199,6 +199,104 @@ void IRsend::sendPanasonic(unsigned int address, unsigned long data) {
     mark(PANASONIC_BIT_MARK);
     space(0);
 }
+
+void IRsend::sendApple(unsigned long data, int nbits,int repeat){
+  enableIROut(38);
+
+  if (repeat == 0) {
+    mark(APPLE_HDR_MARK);
+    space(APPLE_HDR_SPACE);
+  }  else {
+    mark(APPLE_REPEAT_MARK);
+    space(APPLE_REPEAT_SPACE);  
+  }
+  
+  //PRE DATA
+  unsigned long pre_data = 0x77E1;
+  pre_data <<= 16;
+  for (int i = 0; i < 16; i++) {
+    if (pre_data & TOPBIT) {
+      mark(APPLE_ONE_MARK);
+      space(APPLE_ONE_SPACE);
+    } 
+    else {
+      mark(APPLE_ONE_MARK);
+      space(APPLE_ZERO_SPACE);
+    }
+    pre_data <<= 1;
+  }
+  
+  //BODY
+  data <<= nbits;
+  for (int i = 0; i < nbits; i++) {
+    if (data & TOPBIT) {
+      mark(APPLE_ONE_MARK);
+      space(APPLE_ONE_SPACE);
+    } 
+    else {
+      mark(APPLE_ONE_MARK);
+      space(APPLE_ZERO_SPACE);
+    }
+    data <<= 1;
+  }
+
+  //POST DATA
+  unsigned long post_data = 0x49;
+  post_data <<= 8;
+  for (int i = 0; i < 8; i++) {
+    if (post_data & TOPBIT) {
+      mark(APPLE_ONE_MARK);
+      space(APPLE_ONE_SPACE);
+    } 
+    else {
+      mark(APPLE_ONE_MARK);
+      space(APPLE_ZERO_SPACE);
+    }
+    post_data <<= 1;
+  }
+
+  mark(APPLE_PTRAIL);
+  space(APPLE_GAP);  //gap
+}
+
+
+void IRsend::sendSamsung(unsigned long data, int nbits,int repeat){
+  enableIROut(38);
+
+  mark(SAMSUNG_HDR_MARK);
+  space(SAMSUNG_HDR_SPACE);
+  //Invio il pre_data 0xE0E0 del protocollo http://lirc.sourceforge.net/remotes/samsung/AA59-00382A
+  unsigned long pre_data = 0xE0E0;
+  pre_data <<= 16;
+  for (int i = 0; i < 16; i++) {
+    if (pre_data & TOPBIT) {
+      mark(SAMSUNG_ONE_MARK);
+      space(SAMSUNG_ONE_SPACE);
+    } 
+    else {
+      mark(SAMSUNG_ONE_MARK);
+      space(SAMSUNG_ZERO_SPACE);
+    }
+    pre_data <<= 1;
+  }
+  //Ora trasmetto il mio segnale
+  data = data << nbits;
+  for (int i = 0; i < nbits; i++) {
+    if (data & TOPBIT) {
+      mark(SAMSUNG_ONE_MARK);
+      space(SAMSUNG_ONE_SPACE);
+    } 
+    else {
+      mark(SAMSUNG_ONE_MARK);
+      space(SAMSUNG_ZERO_SPACE);
+    }
+    data <<= 1;
+  }
+  //aggiungo il trail
+  mark(SAMSUNG_PTRAIL);
+  space(SAMSUNG_GAP);  //gap
+}
+
 void IRsend::sendJVC(unsigned long data, int nbits, int repeat)
 {
     enableIROut(38);
